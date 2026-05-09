@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Noto Serif TC", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #8B1D3D;
+  --color-bg-earth: #FAF9F8;
+  --color-text-earth: #2D2926;
+  --color-text-muted: #7D746D;
+  --color-card-result: #F3EEEC;
+  --color-border-earth: #E2DBD6;
+  --color-border-soft: #EDE9E6;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-earth text-text-earth font-sans;
+  }
+}
+
+.serif {
+  font-family: 'Noto Serif TC', serif;
+}
+
+.input-card {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--color-border-soft);
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02);
+}
+
+.result-card {
+  background: var(--color-card-result);
+  border-radius: 2rem;
+  border: 1px solid var(--color-border-earth);
+}
+
+.accent-pill {
+  background: var(--color-primary);
+  color: white;
+}
+
+.input-field {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--color-border-earth);
+  border-radius: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
