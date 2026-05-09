@@ -137,12 +137,12 @@ export default function App() {
   return (
     <div className="min-h-screen bg-bg-earth text-text-earth font-sans selection:bg-primary selection:text-white p-6 md:p-12">
       {/* Header */}
-      <header className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
-        <div className="space-y-1">
-          <span className="text-xs tracking-[0.3em] font-semibold text-primary uppercase">Mortgage Eligibility & Income Analysis</span>
-          <h1 className="text-4xl serif font-bold text-stone-800">房貸成數與年薪所得試算</h1>
+      <header className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-end mb-6 md:mb-10 gap-6">
+        <div className="space-y-1 w-full md:w-auto">
+          <span className="text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] font-semibold text-primary uppercase">Mortgage Eligibility & Income Analysis</span>
+          <h1 className="text-2xl md:text-4xl serif font-bold text-stone-800">房貸成數與年薪所得試算</h1>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center w-full md:w-auto">
           <div className="accent-pill px-8 py-3 rounded-full font-bold flex items-center gap-2 shadow-sm hover:opacity-90 transition-all cursor-default">
             <Calculator className="w-5 h-5" />
             <span>智能試算</span>
@@ -150,7 +150,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <main className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
         
         {/* Left Column: Inputs */}
         <div className="lg:col-span-5 space-y-8">
@@ -159,11 +159,11 @@ export default function App() {
           <motion.section 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="input-card p-8"
+            className="input-card p-6 md:p-8"
           >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">01</div>
-              <h2 className="font-bold serif text-xl capitalize text-primary">借款人與保證人</h2>
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">01</div>
+              <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">借款人與保證人</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -294,11 +294,11 @@ export default function App() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="input-card p-8"
+            className="input-card p-6 md:p-8"
           >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">02</div>
-              <h2 className="font-bold serif text-xl capitalize text-primary">購屋案件屬性</h2>
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
+              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">02</div>
+              <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">購屋案件屬性</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -433,21 +433,21 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="result-card p-10 shadow-lg flex flex-col justify-between"
+            className="result-card p-6 md:p-10 shadow-lg flex flex-col justify-between"
           >
-            <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-              <div className="space-y-3">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-4 md:gap-6">
+              <div className="space-y-2 md:space-y-3">
                 <div className="inline-block bg-primary text-white px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase shadow-sm">
                   精算結果分析 Report
                 </div>
-                <h3 className="text-3xl serif font-bold text-stone-800">核貸建議年限：{loanTerm} 年</h3>
-                <p className="text-stone-500 text-sm italic font-medium">
+                <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">核貸建議年限：{loanTerm} 年</h3>
+                <p className="text-stone-500 text-xs md:text-sm italic font-medium">
                   依年齡 {borrower.age} 歲與 {SCHEME_LABELS[borrower.scheme]} 評估，符合銀行審核規範。
                 </p>
               </div>
-              <div className="text-right">
+              <div className="md:text-right w-full md:w-auto">
                 <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-1">預估適用利率</p>
-                <p className="text-5xl font-light text-primary serif">
+                <p className="text-4xl md:text-5xl font-light text-primary serif">
                   {results.length > 0 ? (borrower.scheme === LoanScheme.NEW_YOUTH ? '2.275%' : borrower.scheme === LoanScheme.NEST_NEST ? '2.185%' : borrower.scheme === LoanScheme.TOP_2500 ? '2.585%' : '2.985%') : '---'}
                 </p>
               </div>
@@ -466,18 +466,18 @@ export default function App() {
                 <tbody className="text-sm">
                   {results.map((item, idx) => (
                     <tr key={idx} className={`border-b border-stone-100 last:border-0 hover:bg-white/40 transition-all ${idx === 0 ? 'text-stone-900 font-semibold' : 'text-stone-600'}`}>
-                      <td className="py-5 px-2">
-                        <span className={`badge ${idx === 0 ? 'bg-primary text-white' : 'bg-transparent'} py-1 px-3 rounded-full text-xs`}>
+                      <td className="py-4 md:py-5 px-1 md:px-2">
+                        <span className={`badge ${idx === 0 ? 'bg-primary text-white' : 'bg-transparent'} py-1 px-2 md:px-3 rounded-full text-[10px] md:text-xs whitespace-nowrap`}>
                           {item.ltv}% {idx === 0 ? '(最高)' : ''}
                         </span>
                       </td>
-                      <td className="py-5 px-2 font-medium">{formatCurrency(item.loanAmount)}</td>
-                      <td className="py-5 px-2 font-medium">{formatCurrency(item.monthlyRepayment)}</td>
-                      <td className="py-5 px-2 text-right">
-                        <span className="text-lg font-bold text-primary">
+                      <td className="py-4 md:py-5 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{formatCurrency(item.loanAmount)}</td>
+                      <td className="py-4 md:py-5 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{formatCurrency(item.monthlyRepayment)}</td>
+                      <td className="py-4 md:py-5 px-1 md:px-2 text-right">
+                        <span className="text-base md:text-lg font-bold text-primary block md:inline">
                           {formatIncome(Math.round(item.requiredAnnualIncome / 10000) * 10000)}
                         </span>
-                        <span className="text-[10px] ml-1 text-primary/60">元以上</span>
+                        <span className="text-[9px] md:text-[10px] md:ml-1 text-primary/60">元以上</span>
                       </td>
                     </tr>
                   ))}
@@ -512,14 +512,14 @@ export default function App() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-primary text-white rounded-[2rem] p-10 shadow-sm relative overflow-hidden"
+                className="bg-primary text-white rounded-[2rem] p-6 md:p-10 shadow-sm relative overflow-hidden"
               >
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="bg-white/10 p-2 rounded-lg">
                       <CircleDollarSign className="w-5 h-5" />
                     </div>
-                    <h2 className="text-xl serif font-bold">寬限期資格審查預估</h2>
+                    <h2 className="text-lg md:text-xl serif font-bold">寬限期資格審查預估</h2>
                   </div>
 
                   <p className="text-stone-200/80 text-xs mb-10 leading-relaxed font-medium bg-white/5 p-4 rounded-xl backdrop-blur-sm border border-white/5">
