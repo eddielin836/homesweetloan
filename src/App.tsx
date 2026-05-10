@@ -20,7 +20,7 @@ import {
   Table as TableIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BorrowerInfo, PropertyInfo, LoanScheme, HouseType, Relationship, CalculationResult } from './types';
+import { BorrowerInfo, PropertyInfo, LoanScheme, HouseType, CalculationResult } from './types';
 import { SCHEME_LABELS, TAIWAN_CITIES, SCHEME_DEFAULT_RATES } from './constants';
 import { performMainCalculation, calculateLoanTerm, calculateMonthlyPayment } from './utils';
 
@@ -35,7 +35,6 @@ export default function App() {
     hasGuarantor: false,
     guarantor: {
       otherLoanMonthly: 0,
-      relationship: Relationship.FAMILY,
       residenceCity: '台北市'
     }
   });
@@ -258,7 +257,7 @@ export default function App() {
               </div>
 
               <div className="md:col-span-2 pt-4 flex items-center justify-between border-t border-border-earth">
-                <span className="text-sm font-semibold text-stone-700">提供一般保證人</span>
+                <span className="text-sm font-semibold text-stone-700 font-bold">提供一般保證人</span>
                 <button 
                   onClick={() => handleBorrowerChange('hasGuarantor', !borrower.hasGuarantor)}
                   className={`w-12 h-6 rounded-full relative p-1 transition-colors duration-200 ${borrower.hasGuarantor ? 'bg-primary' : 'bg-stone-300'}`}
@@ -296,19 +295,6 @@ export default function App() {
                         </select>
                       </div>
 
-                      <div className="space-y-1">
-                        <label className="form-label">保證人關係</label>
-                      <select 
-                        value={borrower.guarantor.relationship}
-                        onChange={(e) => handleGuarantorChange('relationship', e.target.value as Relationship)}
-                        className="input-field font-medium text-sm"
-                      >
-                        <option value={Relationship.FAMILY}>家人</option>
-                        <option value={Relationship.SPOUSE}>配偶</option>
-                        <option value={Relationship.OTHER}>其他</option>
-                      </select>
-                    </div>
-
                     <div className="space-y-1 md:col-span-2">
                       <label className="form-label">其他貸款月還款金額 (信貸、車貸等)</label>
                       <div className="relative">
@@ -336,7 +322,7 @@ export default function App() {
           >
             <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">02</div>
-              <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">購屋案件屬性</h2>
+              <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">購房細節</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -383,25 +369,6 @@ export default function App() {
                 </div>
               </div>
 
-              {!property.isPreSale && (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="space-y-1 md:col-span-2"
-                >
-                  <label className="form-label">房屋屋齡</label>
-                  <div className="relative">
-                    <input 
-                      type="number" 
-                      value={property.houseAge === 0 ? '' : property.houseAge}
-                      onChange={(e) => handleNumericChange((v) => handlePropertyChange('houseAge', v), e.target.value)}
-                      className="input-field pr-12 font-medium"
-                    />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">年</span>
-                  </div>
-                </motion.div>
-              )}
-
               <div className="space-y-1 md:col-span-2">
                 <label className="form-label">購屋總價 (萬)</label>
                 <div className="relative">
@@ -416,7 +383,26 @@ export default function App() {
                 <p className="text-[10px] text-text-muted font-medium ml-1">等於 {formatCurrency(property.purchasePrice)}</p>
               </div>
 
-              <div className="space-y-1">
+              {!property.isPreSale && (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="space-y-1"
+                >
+                  <label className="form-label">房屋屋齡</label>
+                  <div className="relative">
+                    <input 
+                      type="number" 
+                      value={property.houseAge === 0 ? '' : property.houseAge}
+                      onChange={(e) => handleNumericChange((v) => handlePropertyChange('houseAge', v), e.target.value)}
+                      className="input-field pr-12 font-medium"
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">年</span>
+                  </div>
+                </motion.div>
+              )}
+
+              <div className={`space-y-1 ${property.isPreSale ? 'md:col-span-2' : ''}`}>
                 <label className="form-label">房屋種類</label>
                 <select 
                   value={property.houseType}
@@ -428,37 +414,56 @@ export default function App() {
                   <option value={HouseType.TOWNHOUSE}>透天</option>
                 </select>
               </div>
+            </div>
+          </motion.section>
 
-              <div className="pt-8 pl-1">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                  <div 
-                    className={`w-10 h-6 rounded-full relative p-1 transition-colors duration-200 ${property.needsGracePeriod ? 'bg-primary' : 'bg-stone-300'}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePropertyChange('needsGracePeriod', !property.needsGracePeriod);
-                    }}
-                  >
-                    <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ${property.needsGracePeriod ? 'translate-x-4' : 'translate-x-0'}`}></div>
-                  </div>
-                  <span className="font-bold text-stone-700 group-hover:text-stone-900 transition-all text-sm">需要寬限期</span>
-                </label>
+          {/* Section: Grace Period */}
+          <motion.section 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="input-card p-6 md:p-8"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">03</div>
+              <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">寬限期試算</h2>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold text-stone-700 font-bold">需要寬限期試算</span>
+                <button 
+                  onClick={() => handlePropertyChange('needsGracePeriod', !property.needsGracePeriod)}
+                  className={`w-12 h-6 rounded-full relative p-1 transition-colors duration-200 ${property.needsGracePeriod ? 'bg-primary' : 'bg-stone-300'}`}
+                >
+                  <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ${property.needsGracePeriod ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                </button>
               </div>
 
               {property.needsGracePeriod && (
-                <div className="md:col-span-2 space-y-1 mt-2">
-                  <label className="form-label">寬限期試算貸款成數</label>
-                  <div className="flex gap-2 p-1 bg-stone-100 rounded-xl overflow-x-auto">
-                    {(borrower.scheme === LoanScheme.NEST_NEST ? [0.85, 0.8, 0.75, 0.7, 0.65, 0.6] : [0.8, 0.75, 0.7, 0.65, 0.6]).map(val => (
-                      <button 
-                        key={val}
-                        onClick={() => handlePropertyChange('gracePeriodLTV', val)}
-                        className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${property.gracePeriodLTV === val ? 'bg-white shadow-sm text-stone-800' : 'text-stone-400 hover:text-stone-500'}`}
-                      >
-                        {(val * 100).toFixed(0)}%
-                      </button>
-                    ))}
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="space-y-4 pt-4 border-t border-border-earth overflow-hidden"
+                >
+                  <div className="space-y-1">
+                    <label className="form-label">寬限期試算貸款成數</label>
+                    <div className="flex gap-2 p-1 bg-stone-100 rounded-xl overflow-x-auto">
+                      {(borrower.scheme === LoanScheme.NEST_NEST ? [0.85, 0.8, 0.75, 0.7, 0.65, 0.6] : [0.8, 0.75, 0.7, 0.65, 0.6]).map(val => (
+                        <button 
+                          key={val}
+                          onClick={() => handlePropertyChange('gracePeriodLTV', val)}
+                          className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all whitespace-nowrap ${property.gracePeriodLTV === val ? 'bg-white shadow-sm text-stone-800' : 'text-stone-400 hover:text-stone-500'}`}
+                        >
+                          {(val * 100).toFixed(0)}%
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                  <p className="text-[10px] text-text-muted italic leading-relaxed">
+                    ※ 勾選後下方將顯示寬限期結束後（剩餘攤還期）所需之年薪門檻。
+                  </p>
+                </motion.div>
               )}
             </div>
           </motion.section>
@@ -480,7 +485,7 @@ export default function App() {
                 </div>
                 <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">核貸建議年限：{loanTerm} 年</h3>
                 <p className="text-stone-500 text-xs md:text-sm italic font-medium">
-                  依年齡 {borrower.age} 歲與 {SCHEME_LABELS[borrower.scheme]} 評估，符合銀行審核規範。
+                  依年齡 {borrower.age} 歲與 {SCHEME_LABELS[borrower.scheme]} 評估。
                 </p>
               </div>
               <div className="md:text-right w-full md:w-auto">

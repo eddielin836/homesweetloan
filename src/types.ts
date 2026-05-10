@@ -16,12 +16,6 @@ export enum HouseType {
   TOWNHOUSE = 'TOWNHOUSE' // 透天
 }
 
-export enum Relationship {
-  FAMILY = 'FAMILY',
-  SPOUSE = 'SPOUSE',
-  OTHER = 'OTHER'
-}
-
 export interface BorrowerInfo {
   age: number;
   scheme: LoanScheme;
@@ -31,7 +25,6 @@ export interface BorrowerInfo {
   hasGuarantor: boolean;
   guarantor: {
     otherLoanMonthly: number;
-    relationship: Relationship;
     residenceCity: string;
   };
 }
