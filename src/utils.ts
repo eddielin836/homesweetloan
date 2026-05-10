@@ -62,7 +62,7 @@ function getRequiredRatio(ltv: number, isNestNest: boolean): number {
  */
 export function performMainCalculation(borrower: BorrowerInfo, property: PropertyInfo): CalculationResult[] {
   const years = calculateLoanTerm(borrower, property);
-  const rate = SCHEME_DEFAULT_RATES[borrower.scheme];
+  const rate = borrower.annualRate || SCHEME_DEFAULT_RATES[borrower.scheme];
   const isNestNest = borrower.scheme === LoanScheme.NEST_NEST;
   
   // Living expenses

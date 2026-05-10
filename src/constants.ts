@@ -6,7 +6,7 @@
 import { LoanScheme } from './types';
 
 export const SCHEME_LABELS: Record<LoanScheme, string> = {
-  [LoanScheme.NEW_YOUTH]: '新青安',
+  [LoanScheme.NEW_YOUTH]: '青年安心成家貸款',
   [LoanScheme.NEST_NEST]: '築巢優利貸',
   [LoanScheme.TOP_2500]: '一般首購-2500大企業',
   [LoanScheme.OTHER_FIRST]: '一般首購-非2500大'

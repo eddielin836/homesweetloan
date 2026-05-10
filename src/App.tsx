@@ -29,6 +29,7 @@ export default function App() {
   const [borrower, setBorrower] = useState<BorrowerInfo>({
     age: 30,
     scheme: LoanScheme.NEW_YOUTH,
+    annualRate: SCHEME_DEFAULT_RATES[LoanScheme.NEW_YOUTH],
     otherLoanMonthly: 0,
     residenceCity: '台北市',
     hasGuarantor: false,
@@ -80,7 +81,7 @@ export default function App() {
     return [1, 2, 3, 4, 5].map(gYears => {
       const remainingYears = loanTerm - gYears;
       // Monthly payment AFTER grace period (shorter term)
-      const rate = SCHEME_DEFAULT_RATES[borrower.scheme];
+      const rate = borrower.annualRate || SCHEME_DEFAULT_RATES[borrower.scheme];
       const monthlyRepayAfterGrace = calculateMonthlyPayment(loanAmount, rate, remainingYears);
       
       const ratio = gYears <= 2 ? 2.0 : 2.5;
@@ -96,16 +97,32 @@ export default function App() {
   }, [property.needsGracePeriod, results, borrower, loanTerm]);
 
   // --- Handlers ---
-  const handleBorrowerChange = (field: keyof BorrowerInfo, value: any) => {
-    setBorrower(prev => ({ ...prev, [field]: value }));
-    
-    // When scheme changes, check if gracePeriodLTV needs update
-    if (field === 'scheme') {
-      const isNestNest = value === LoanScheme.NEST_NEST;
-      if (!isNestNest && property.gracePeriodLTV === 0.85) {
-        handlePropertyChange('gracePeriodLTV', 0.8);
-      }
+  const handleNumericChange = (setter: (val: number) => void, value: string) => {
+    if (value === '') {
+      setter(0);
+      return;
     }
+    const parsed = parseFloat(value);
+    if (!isNaN(parsed)) {
+      setter(parsed);
+    }
+  };
+
+  const handleBorrowerChange = (field: keyof BorrowerInfo, value: any) => {
+    setBorrower(prev => {
+      const newState = { ...prev, [field]: value };
+      
+      // When scheme changes, check if gracePeriodLTV needs update AND update annualRate
+      if (field === 'scheme') {
+        const isNestNest = value === LoanScheme.NEST_NEST;
+        if (!isNestNest && property.gracePeriodLTV === 0.85) {
+          handlePropertyChange('gracePeriodLTV', 0.8);
+        }
+        newState.annualRate = SCHEME_DEFAULT_RATES[value as LoanScheme];
+      }
+      
+      return newState;
+    });
   };
 
   const handleGuarantorChange = (field: keyof BorrowerInfo['guarantor'], value: any) => {
@@ -185,8 +202,8 @@ export default function App() {
                 <div className="relative">
                   <input 
                     type="number" 
-                    value={borrower.age}
-                    onChange={(e) => handleBorrowerChange('age', parseInt(e.target.value) || 0)}
+                    value={borrower.age === 0 ? '' : borrower.age}
+                    onChange={(e) => handleNumericChange((v) => handleBorrowerChange('age', v), e.target.value)}
                     className="input-field pr-12 font-medium"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">歲</span>
@@ -206,13 +223,34 @@ export default function App() {
                 </select>
               </div>
 
+              {(borrower.scheme === LoanScheme.TOP_2500 || borrower.scheme === LoanScheme.OTHER_FIRST) && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="space-y-1 overflow-hidden"
+                >
+                  <label className="form-label">自定義貸款利率 (%)</label>
+                  <div className="relative">
+                    <input 
+                      type="number" 
+                      step="0.001"
+                      value={borrower.annualRate === 0 ? '' : borrower.annualRate}
+                      onChange={(e) => handleNumericChange((v) => handleBorrowerChange('annualRate', v), e.target.value)}
+                      className="input-field pr-12 font-medium"
+                      placeholder={SCHEME_DEFAULT_RATES[borrower.scheme].toString()}
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">%</span>
+                  </div>
+                </motion.div>
+              )}
+
               <div className="space-y-1 md:col-span-2">
                 <label className="form-label">其他貸款月還款金額 (信貸、車貸等)</label>
                 <div className="relative">
                   <input 
                     type="number" 
-                    value={borrower.otherLoanMonthly}
-                    onChange={(e) => handleBorrowerChange('otherLoanMonthly', parseInt(e.target.value) || 0)}
+                    value={borrower.otherLoanMonthly === 0 ? '' : borrower.otherLoanMonthly}
+                    onChange={(e) => handleNumericChange((v) => handleBorrowerChange('otherLoanMonthly', v), e.target.value)}
                     className="input-field pr-12 font-medium"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">元</span>
@@ -271,16 +309,16 @@ export default function App() {
                       </select>
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="form-label">保證人其他貸款月還款金額 (信貸、車貸等)</label>
+                    <div className="space-y-1 md:col-span-2">
+                      <label className="form-label">其他貸款月還款金額 (信貸、車貸等)</label>
                       <div className="relative">
                         <input 
                           type="number" 
-                          value={borrower.guarantor.otherLoanMonthly}
-                          onChange={(e) => handleGuarantorChange('otherLoanMonthly', parseInt(e.target.value) || 0)}
-                          className="input-field pr-10 font-medium text-sm"
+                          value={borrower.guarantor.otherLoanMonthly === 0 ? '' : borrower.guarantor.otherLoanMonthly}
+                          onChange={(e) => handleNumericChange((v) => handleGuarantorChange('otherLoanMonthly', v), e.target.value)}
+                          className="input-field pr-12 font-medium"
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted text-[10px] font-bold">元</span>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">元</span>
                       </div>
                     </div>
                   </div>
@@ -355,8 +393,8 @@ export default function App() {
                   <div className="relative">
                     <input 
                       type="number" 
-                      value={property.houseAge}
-                      onChange={(e) => handlePropertyChange('houseAge', parseInt(e.target.value) || 0)}
+                      value={property.houseAge === 0 ? '' : property.houseAge}
+                      onChange={(e) => handleNumericChange((v) => handlePropertyChange('houseAge', v), e.target.value)}
                       className="input-field pr-12 font-medium"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xs font-bold">年</span>
@@ -369,8 +407,8 @@ export default function App() {
                 <div className="relative">
                   <input 
                     type="number" 
-                    value={property.purchasePrice / 10000}
-                    onChange={(e) => handlePropertyChange('purchasePrice', (parseInt(e.target.value) || 0) * 10000)}
+                    value={property.purchasePrice === 0 ? '' : property.purchasePrice / 10000}
+                    onChange={(e) => handleNumericChange((v) => handlePropertyChange('purchasePrice', v * 10000), e.target.value)}
                     className="input-field pr-12 font-bold text-lg serif"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted font-bold">萬</span>
@@ -448,7 +486,7 @@ export default function App() {
               <div className="md:text-right w-full md:w-auto">
                 <p className="text-[10px] text-primary font-bold uppercase tracking-widest mb-1">預估適用利率</p>
                 <p className="text-4xl md:text-5xl font-light text-primary serif">
-                  {results.length > 0 ? (borrower.scheme === LoanScheme.NEW_YOUTH ? '2.275%' : borrower.scheme === LoanScheme.NEST_NEST ? '2.185%' : borrower.scheme === LoanScheme.TOP_2500 ? '2.585%' : '2.985%') : '---'}
+                  {results.length > 0 ? `${(borrower.annualRate || 0).toFixed(3)}%` : '---'}
                 </p>
               </div>
             </div>
