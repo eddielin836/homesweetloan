@@ -66,7 +66,7 @@ export function performMainCalculation(borrower: BorrowerInfo, property: Propert
   const isNestNest = borrower.scheme === LoanScheme.NEST_NEST;
   
   // Living expenses
-  const borrowerCity = TAIWAN_CITIES.find(c => c.name === borrower.residenceCity);
+  const borrowerCity = TAIWAN_CITIES.find(c => c.name === property.city);
   const borrowerLivingExpense = borrowerCity ? borrowerCity.livingExpense : 16000;
   
   let totalLivingExpense = borrowerLivingExpense;

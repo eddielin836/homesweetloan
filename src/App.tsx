@@ -20,7 +20,7 @@ import {
   Table as TableIcon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BorrowerInfo, PropertyInfo, LoanScheme, HouseType, CalculationResult } from './types';
+import { BorrowerInfo, PropertyInfo, LoanScheme, CalculationResult } from './types';
 import { SCHEME_LABELS, TAIWAN_CITIES, SCHEME_DEFAULT_RATES } from './constants';
 import { performMainCalculation, calculateLoanTerm, calculateMonthlyPayment } from './utils';
 
@@ -45,7 +45,6 @@ export default function App() {
     isPreSale: true,
     houseAge: 0,
     purchasePrice: 10000000,
-    houseType: HouseType.ELEVATOR,
     needsGracePeriod: false,
     gracePeriodLTV: 0.8
   });
@@ -64,7 +63,7 @@ export default function App() {
     const loanAmount = property.purchasePrice * ltv;
     
     // Living expenses based on residence
-    const bCity = TAIWAN_CITIES.find(c => c.name === borrower.residenceCity);
+    const bCity = TAIWAN_CITIES.find(c => c.name === property.city);
     const bExpense = bCity ? bCity.livingExpense : 16000;
     
     let totalExpense = bExpense;
@@ -174,22 +173,10 @@ export default function App() {
             <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">01</div>
               <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">借款人與保證人</h2>
+              <span className="text-xs md:text-sm text-text-muted font-bold ml-1 italic">※ 首購及自住使用</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-1">
-                <label className="form-label">借款人居住地</label>
-                <select 
-                  value={borrower.residenceCity}
-                  onChange={(e) => handleBorrowerChange('residenceCity', e.target.value)}
-                  className="input-field font-medium appearance-none"
-                >
-                  {TAIWAN_CITIES.map(city => (
-                    <option key={`borrower-${city.name}`} value={city.name}>{city.name}</option>
-                  ))}
-                </select>
-              </div>
-
               <div className="space-y-1">
                 <label className="form-label">借款人年齡</label>
                 <div className="relative">
@@ -272,12 +259,12 @@ export default function App() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Users className="w-4 h-4 text-text-muted" />
-                    <h3 className="text-sm font-bold text-text-muted uppercase tracking-wider">保證人詳細資料</h3>
+                    <h3 className="text-sm font-bold text-text-muted uppercase tracking-wider">保證人資料</h3>
                   </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-1">
-                        <label className="form-label">保證人居住地</label>
+                        <label className="form-label">居住地</label>
                         <select 
                           value={borrower.guarantor.residenceCity}
                           onChange={(e) => handleGuarantorChange('residenceCity', e.target.value)}
@@ -363,7 +350,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="space-y-1 md:col-span-2">
+              <div className="space-y-1">
                 <label className="form-label">購屋總價 (萬)</label>
                 <div className="relative">
                   <input 
@@ -375,19 +362,6 @@ export default function App() {
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted font-bold">萬</span>
                 </div>
                 <p className="text-[10px] text-text-muted font-medium ml-1">等於 {formatCurrency(property.purchasePrice)}</p>
-              </div>
-
-              <div className="space-y-1">
-                <label className="form-label">房屋種類</label>
-                <select 
-                  value={property.houseType}
-                  onChange={(e) => handlePropertyChange('houseType', e.target.value as HouseType)}
-                  className="input-field font-medium appearance-none"
-                >
-                  <option value={HouseType.APARTMENT}>公寓</option>
-                  <option value={HouseType.ELEVATOR}>電梯大樓</option>
-                  <option value={HouseType.TOWNHOUSE}>透天</option>
-                </select>
               </div>
 
               {!property.isPreSale && (
@@ -425,7 +399,7 @@ export default function App() {
 
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-stone-700 font-bold">需要寬限期試算</span>
+                <span className="text-sm font-semibold text-stone-700 font-bold">需要寬限期</span>
                 <button 
                   onClick={() => handlePropertyChange('needsGracePeriod', !property.needsGracePeriod)}
                   className={`w-12 h-6 rounded-full relative p-1 transition-colors duration-200 ${property.needsGracePeriod ? 'bg-primary' : 'bg-stone-300'}`}
@@ -603,7 +577,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_06
+        v.01.0510_11
       </div>
     </div>
   );

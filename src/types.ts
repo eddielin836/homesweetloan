@@ -10,12 +10,6 @@ export enum LoanScheme {
   OTHER_FIRST = 'OTHER_FIRST' // 一般首購-非2500大
 }
 
-export enum HouseType {
-  APARTMENT = 'APARTMENT', // 公寓
-  ELEVATOR = 'ELEVATOR',   // 電梯大樓
-  TOWNHOUSE = 'TOWNHOUSE' // 透天
-}
-
 export interface BorrowerInfo {
   age: number;
   scheme: LoanScheme;
@@ -35,7 +29,6 @@ export interface PropertyInfo {
   isPreSale: boolean;
   houseAge: number;
   purchasePrice: number;
-  houseType: HouseType;
   needsGracePeriod: boolean;
   gracePeriodLTV?: number;
 }
