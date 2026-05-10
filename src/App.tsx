@@ -42,7 +42,7 @@ export default function App() {
   const [property, setProperty] = useState<PropertyInfo>({
     city: '台北市',
     district: '中正區',
-    isPreSale: false,
+    isPreSale: true,
     houseAge: 0,
     purchasePrice: 10000000,
     houseType: HouseType.ELEVATOR,
@@ -327,7 +327,7 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-1">
-                <label className="form-label">選擇購屋城市</label>
+                <label className="form-label">縣市</label>
                 <select 
                   value={property.city}
                   onChange={(e) => handlePropertyChange('city', e.target.value)}
@@ -383,6 +383,19 @@ export default function App() {
                 <p className="text-[10px] text-text-muted font-medium ml-1">等於 {formatCurrency(property.purchasePrice)}</p>
               </div>
 
+              <div className="space-y-1">
+                <label className="form-label">房屋種類</label>
+                <select 
+                  value={property.houseType}
+                  onChange={(e) => handlePropertyChange('houseType', e.target.value as HouseType)}
+                  className="input-field font-medium appearance-none"
+                >
+                  <option value={HouseType.APARTMENT}>公寓</option>
+                  <option value={HouseType.ELEVATOR}>電梯大樓</option>
+                  <option value={HouseType.TOWNHOUSE}>透天</option>
+                </select>
+              </div>
+
               {!property.isPreSale && (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.98 }}
@@ -401,19 +414,6 @@ export default function App() {
                   </div>
                 </motion.div>
               )}
-
-              <div className={`space-y-1 ${property.isPreSale ? 'md:col-span-2' : ''}`}>
-                <label className="form-label">房屋種類</label>
-                <select 
-                  value={property.houseType}
-                  onChange={(e) => handlePropertyChange('houseType', e.target.value as HouseType)}
-                  className="input-field font-medium appearance-none"
-                >
-                  <option value={HouseType.APARTMENT}>公寓</option>
-                  <option value={HouseType.ELEVATOR}>電梯大樓</option>
-                  <option value={HouseType.TOWNHOUSE}>透天</option>
-                </select>
-              </div>
             </div>
           </motion.section>
 
