@@ -592,7 +592,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_28
+        v.01.0510_33
       </div>
     </div>
   );

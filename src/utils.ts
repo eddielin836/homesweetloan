@@ -30,9 +30,9 @@ export function calculateLoanTerm(borrower: BorrowerInfo, property: PropertyInfo
   // a. 預設年限：新青安與築巢優利貸 40 年，其他 30 年
   let years = SCHEME_DEFAULT_YEARS[borrower.scheme];
 
-  // b. 年限 + 年齡 <= 90
-  if (borrower.age + years > 90) {
-    years = Math.max(0, 90 - borrower.age);
+  // b. 年限 + 年齡 <= 89
+  if (borrower.age + years > 89) {
+    years = Math.max(0, 89 - borrower.age);
   }
 
   // c. 屋齡 + 年限 > 50 (非預售屋)，酌減 3 年
