@@ -157,7 +157,7 @@ export default function App() {
       <header className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-end mb-6 md:mb-10 gap-6">
         <div className="space-y-1 w-full md:w-auto">
           <span className="text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] font-semibold text-primary uppercase">Mortgage Eligibility & Income Analysis</span>
-          <h1 className="text-2xl md:text-4xl serif font-bold text-stone-800">房貸成數與年薪所得試算</h1>
+          <h1 className="text-2xl md:text-4xl serif font-bold text-stone-800">房貸成數與所得試算</h1>
         </div>
         <div className="flex gap-4 items-center w-full md:w-auto">
           <div className="accent-pill px-8 py-3 rounded-full font-bold flex items-center gap-2 shadow-sm hover:opacity-90 transition-all cursor-default">
@@ -538,7 +538,7 @@ export default function App() {
                 </div>
               </div>
               <div className="flex gap-4 shrink-0">
-                <button className="text-[10px] font-black text-primary border-b-2 border-primary/20 hover:border-primary transition-all uppercase tracking-widest pb-1">匯出報表</button>
+
               </div>
             </div>
           </motion.div>
@@ -585,22 +585,20 @@ export default function App() {
             )}
           </AnimatePresence>
 
-          {/* Footer Guidelines */}
-          <footer className="mt-16 pt-8 border-t border-border-earth flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold">
-            <div className="flex items-center gap-8">
-               <div className="flex flex-col gap-1">
-                 <span className="text-stone-900">核心引擎</span>
-                 <span>Intelligent Real Estate V1.0</span>
-               </div>
-               <div className="flex flex-col gap-1">
-                 <span className="text-stone-900">地區資料</span>
-                 <span>內政部最低生活費連動</span>
-               </div>
-            </div>
-            <p className="text-center md:text-right max-w-md normal-case italic font-medium">
-              本試算結果僅供參考，主要揭示各成數下銀行可能之基本門檻，實際核貸仍需考量個人信用評價、負債狀況及銀行鑑價金額。
-            </p>
-          </footer>
+      {/* Footer Guidelines */}
+      <footer className="mt-16 pt-10 border-t border-border-earth">
+        <div className="max-w-[1400px] mx-auto bg-primary/5 rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 border border-primary/10">
+          <div className="p-3 bg-primary/10 rounded-full text-primary shrink-0">
+            <Info className="w-6 h-6 md:w-8 md:h-8" />
+          </div>
+          <p className="text-center md:text-left text-sm md:text-base text-primary/80 font-bold leading-relaxed serif italic">
+            本試算結果僅供參考，主要揭示各成數下銀行可能之基本門檻，實際核貸仍需考量個人信用評價、負債狀況及銀行鑑價金額。
+          </p>
+        </div>
+        <div className="mt-8 text-center text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold">
+          © {new Date().getFullYear()} Mortgage Eligibility Analysis Tool
+        </div>
+      </footer>
         </div>
       </main>
     </div>
