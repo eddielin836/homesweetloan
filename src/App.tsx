@@ -93,7 +93,7 @@ export default function App() {
         requiredAnnualIncome: annualIncome
       };
     });
-  }, [property.needsGracePeriod, borrower, loanTerm]);
+  }, [property, borrower, loanTerm]);
 
   // --- Handlers ---
   const handleNumericChange = (setter: (val: number) => void, value: string) => {
@@ -474,10 +474,10 @@ export default function App() {
                 </thead>
                 <tbody className="text-xs md:text-sm">
                   {results.map((item, idx) => (
-                    <tr key={idx} className={`border-b border-stone-100 last:border-0 hover:bg-white/40 transition-all ${idx === 0 ? 'text-stone-900 font-semibold' : 'text-stone-600'}`}>
+                    <tr key={idx} className="border-b border-stone-100 last:border-0 hover:bg-white/40 transition-all text-stone-600">
                       <td className="py-3 md:py-4 px-1 md:px-2">
-                        <span className={`badge ${idx === 0 ? 'bg-primary text-white' : 'bg-transparent'} py-0.5 px-2 md:px-3 rounded-full text-[10px] md:text-xs whitespace-nowrap`}>
-                          {item.ltv}% {idx === 0 ? '(最高)' : ''}
+                        <span className="text-sm md:text-base font-bold text-stone-800 whitespace-nowrap">
+                          {item.ltv}%
                         </span>
                       </td>
                       <td className="py-3 md:py-4 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{formatCurrency(item.loanAmount)}</td>
@@ -592,7 +592,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_22
+        v.01.0510_26
       </div>
     </div>
   );
