@@ -151,7 +151,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-earth text-text-earth font-sans selection:bg-primary selection:text-white p-6 md:p-12">
+    <div className="min-h-screen bg-bg-earth text-text-earth font-sans selection:bg-primary selection:text-white p-6 md:p-12 relative">
       {/* Header */}
       <header className="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-end mb-6 md:mb-10 gap-6">
         <div className="space-y-1 w-full md:w-auto">
@@ -606,6 +606,11 @@ export default function App() {
       </footer>
         </div>
       </main>
+
+      {/* Version Label */}
+      <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
+        v.01.0510_03
+      </div>
     </div>
   );
 }
