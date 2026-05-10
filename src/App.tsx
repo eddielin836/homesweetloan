@@ -477,7 +477,7 @@ export default function App() {
                 <div className="inline-block bg-primary text-white px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase shadow-sm">
                   精算結果分析 Report
                 </div>
-                <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">最高核貸年限：{loanTerm} 年</h3>
+                <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">最長核貸年限：{loanTerm} 年</h3>
                 <p className="text-stone-500 text-xs md:text-sm italic font-medium">
                   依年齡 {borrower.age} 歲與 {SCHEME_LABELS[borrower.scheme]} 評估。
                 </p>
@@ -603,7 +603,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_05
+        v.01.0510_06
       </div>
     </div>
   );
