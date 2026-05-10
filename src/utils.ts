@@ -27,17 +27,18 @@ export function calculateMonthlyPayment(principal: number, annualRate: number, y
  * Calculate Loan Term based on constraints
  */
 export function calculateLoanTerm(borrower: BorrowerInfo, property: PropertyInfo): number {
+  // a. 預設年限：新青安與築巢優利貸 40 年，其他 30 年
   let years = SCHEME_DEFAULT_YEARS[borrower.scheme];
 
-  // Constraint 1: Age + Term <= 90
+  // b. 年限 + 年齡 <= 90
   if (borrower.age + years > 90) {
     years = Math.max(0, 90 - borrower.age);
   }
 
-  // Constraint 2: House Age + Term <= 50 (if not pre-sale)
+  // c. 屋齡 + 年限 > 50 (非預售屋)，酌減 3 年
   if (!property.isPreSale && property.houseAge > 0) {
     if (property.houseAge + years > 50) {
-      years = Math.max(0, years - 3); // 酌減 3 年
+      years = Math.max(0, years - 3);
     }
   }
 
