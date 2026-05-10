@@ -173,7 +173,7 @@ export default function App() {
             <div className="flex items-center gap-3 mb-6 md:mb-8">
               <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">01</div>
               <h2 className="font-bold serif text-lg md:text-xl capitalize text-primary text-nowrap">借款人與保證人</h2>
-              <span className="text-xs md:text-sm text-text-muted font-bold ml-1 italic">※ 首購及自住使用</span>
+              <span className="text-[10px] md:text-xs text-text-muted font-bold ml-1 italic">※ 首購及自住使用</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -577,7 +577,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_11
+        v.01.0510_12
       </div>
     </div>
   );
