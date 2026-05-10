@@ -461,7 +461,7 @@ export default function App() {
                     </div>
                   </div>
                   <p className="text-[10px] text-text-muted italic leading-relaxed">
-                    ※ 勾選後下方將顯示寬限期結束後（剩餘攤還期）所需之年薪門檻。
+                    ※ 勾選後下方將顯示各寬限期所需之年薪門檻。
                   </p>
                 </motion.div>
               )}
@@ -483,7 +483,7 @@ export default function App() {
                 <div className="inline-block bg-primary text-white px-4 py-1 rounded-full text-[10px] font-black tracking-widest uppercase shadow-sm">
                   精算結果分析 Report
                 </div>
-                <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">核貸建議年限：{loanTerm} 年</h3>
+                <h3 className="text-2xl md:text-3xl serif font-bold text-stone-800">最高核貸年限：{loanTerm} 年</h3>
                 <p className="text-stone-500 text-xs md:text-sm italic font-medium">
                   依年齡 {borrower.age} 歲與 {SCHEME_LABELS[borrower.scheme]} 評估。
                 </p>
