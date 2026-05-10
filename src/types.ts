@@ -11,14 +11,14 @@ export enum LoanScheme {
 }
 
 export interface BorrowerInfo {
-  age: number;
+  age?: number;
   scheme: LoanScheme;
   annualRate?: number;
-  otherLoanMonthly: number;
+  otherLoanMonthly?: number;
   residenceCity: string;
   hasGuarantor: boolean;
   guarantor: {
-    otherLoanMonthly: number;
+    otherLoanMonthly?: number;
     residenceCity: string;
   };
 }
@@ -27,8 +27,8 @@ export interface PropertyInfo {
   city: string;
   district: string;
   isPreSale: boolean;
-  houseAge: number;
-  purchasePrice: number;
+  houseAge?: number;
+  purchasePrice?: number;
   needsGracePeriod: boolean;
   gracePeriodLTV?: number;
 }
@@ -37,5 +37,13 @@ export interface CalculationResult {
   ltv: number;
   loanAmount: number;
   monthlyRepayment: number;
+  requiredAnnualIncome: number;
+}
+
+export interface GracePeriodResult {
+  label: string;
+  ratio: number;
+  loanAmount: number;
+  monthlyRepayAfterGrace: number;
   requiredAnnualIncome: number;
 }

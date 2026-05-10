@@ -26,7 +26,13 @@ export const SCHEME_DEFAULT_YEARS: Record<LoanScheme, number> = {
   [LoanScheme.OTHER_FIRST]: 30
 };
 
-export const TAIWAN_CITIES = [
+export interface TaiwanCity {
+  name: string;
+  livingExpense: number;
+  districts: string[];
+}
+
+export const TAIWAN_CITIES: TaiwanCity[] = [
   { name: '台北市', livingExpense: 20000, districts: ['中正區', '大同區', '中山區', '松山區', '大安區', '萬華區', '信義區', '士林區', '北投區', '內湖區', '南港區', '文山區'] },
   { name: '新北市', livingExpense: 18000, districts: ['板橋區', '三重區', '中和區', '永和區', '新莊區', '新店區', '樹林區', '鶯歌區', '三峽區', '淡水區', '汐止區', '瑞芳區', '土城區', '蘆洲區', '五股區', '泰山區', '林口區', '深坑區', '石碇區', '坪林區', '三芝區', '石門區', '八里區', '平溪區', '雙溪區', '貢寮區', '金山區', '萬里區', '烏來區'] },
   { name: '桃園市', livingExpense: 18000, districts: ['桃園區', '中壢區', '大溪區', '楊梅區', '蘆竹區', '大園區', '龜山區', '八德區', '龍潭區', '平鎮區', '新屋區', '觀音區', '復興區'] },
@@ -50,3 +56,32 @@ export const TAIWAN_CITIES = [
   { name: '金門縣', livingExpense: 16000, districts: ['金城鎮', '金湖鎮', '金沙鎮', '金寧鄉', '烈嶼鄉', '烏坵鄉'] },
   { name: '連江縣', livingExpense: 16000, districts: ['南竿鄉', '北竿鄉', '莒光鄉', '東引鄉'] }
 ];
+
+export const CITY_BY_NAME: ReadonlyMap<string, TaiwanCity> = new Map(TAIWAN_CITIES.map(c => [c.name, c]));
+
+// Magic numbers
+export const MAX_AGE_AT_LOAN_END = 89;
+export const MAX_HOUSE_AGE_PLUS_TERM = 50;
+export const OLD_HOUSE_TERM_PENALTY_YEARS = 3;
+export const DEFAULT_LIVING_EXPENSE = 16000;
+
+export const DTI_RATIOS = {
+  LTV_80_PLUS: 1.8,
+  LTV_75: 1.6,
+  LTV_70: 1.4,
+  LTV_65: 1.2,
+  LTV_60: 1.0,
+} as const;
+
+export const GRACE_PERIOD_RATIOS = {
+  SHORT: 2.0,
+  LONG: 2.5
+} as const;
+
+export const GRACE_LONG_THRESHOLD_YEARS = 3;
+
+export const LTV_LADDER_DEFAULT = [0.8, 0.75, 0.7, 0.65, 0.6] as const;
+export const LTV_LADDER_NEST_NEST = [0.85, 0.8, 0.75, 0.7, 0.65, 0.6] as const;
+
+export const GRACE_DEFAULT_LTV = 0.8;
+export const GRACE_DEFAULT_LTV_NEST_NEST = 0.85;
