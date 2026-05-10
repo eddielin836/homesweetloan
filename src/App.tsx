@@ -158,12 +158,6 @@ export default function App() {
           <span className="text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] font-semibold text-primary uppercase">Mortgage Eligibility & Income Analysis</span>
           <h1 className="text-2xl md:text-4xl serif font-bold text-stone-800">房貸成數與所得試算</h1>
         </div>
-        <div className="flex gap-4 items-center w-full md:w-auto">
-          <div className="accent-pill px-8 py-3 rounded-full font-bold flex items-center gap-2 shadow-sm hover:opacity-90 transition-all cursor-default">
-            <Calculator className="w-5 h-5" />
-            <span>智能試算</span>
-          </div>
-        </div>
       </header>
 
       <main className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
@@ -597,7 +591,7 @@ export default function App() {
             <Info className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           <p className="text-center md:text-left text-sm md:text-base text-primary/80 font-bold leading-relaxed serif italic">
-            本試算結果僅供參考，主要揭示各成數下銀行可能之基本門檻，實際核貸仍需考量個人信用評價、負債狀況及銀行鑑價金額。
+            本試算結果僅供參考，實際核貸與否及核貸條件仍需考量借款人信用狀況及房屋鑑價金額。
           </p>
         </div>
         <div className="mt-8 text-center text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold">
@@ -609,7 +603,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_03
+        v.01.0510_05
       </div>
     </div>
   );
