@@ -499,10 +499,10 @@ export default function App() {
                   <Info className="w-5 h-5" />
                 </div>
                 <div className="space-y-0.5">
-                  <p className="text-[11px] text-stone-600 font-bold leading-tight">
-                    所得門檻已計入借款人(及保證人)居住地生活費需用。
+                  <p className="text-xs md:text-sm text-stone-600 font-bold leading-tight">
+                    所得門檻已計入借款人(及保證人)最低生活費。
                   </p>
-                  <p className="text-[9px] text-stone-400 font-medium italic">
+                  <p className="text-[11px] md:text-xs text-stone-400 font-medium italic">
                     若房屋屋齡偏高，核貸年限與金額可能依鑑價結果再行調整。
                   </p>
                 </div>
@@ -592,7 +592,7 @@ export default function App() {
 
       {/* Version Label */}
       <div className="absolute bottom-4 right-4 text-[10px] text-stone-400 font-mono pointer-events-none select-none opacity-40 z-50">
-        v.01.0510_21
+        v.01.0510_22
       </div>
     </div>
   );
