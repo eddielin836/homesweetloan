@@ -12,7 +12,8 @@ import {
   calculateLoanTerm, 
   performGracePeriodCalculation, 
   effectiveAnnualRate,
-  defaultGraceLTV
+  defaultGraceLTV,
+  getLTVLadder
 } from './utils';
 
 // Sections
@@ -59,13 +60,14 @@ export default function App() {
     }));
   }, [borrower.scheme]);
 
-  // 2. Adjust Grace Period LTV when switching schemes
+  // 2. Sync Grace Period LTV with max allowed when context changes (Reset on change)
   useEffect(() => {
-    const isNestNest = borrower.scheme === LoanScheme.NEST_NEST;
-    if (!isNestNest && property.gracePeriodLTV === GRACE_DEFAULT_LTV_NEST_NEST) {
-      setProperty(prev => ({ ...prev, gracePeriodLTV: GRACE_DEFAULT_LTV }));
+    const ladder = getLTVLadder(borrower.scheme, property);
+    if (ladder.length > 0) {
+      const maxLtv = ladder[0];
+      setProperty(prev => ({ ...prev, gracePeriodLTV: maxLtv }));
     }
-  }, [borrower.scheme, property.gracePeriodLTV]);
+  }, [borrower.scheme, property.city, property.district, property.subDistrict]);
 
   // 3. Reset district when city changes
   useEffect(() => {
