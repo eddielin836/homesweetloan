@@ -56,7 +56,7 @@ export default function App() {
   useEffect(() => {
     setBorrower(prev => ({
       ...prev,
-      annualRate: SCHEME_DEFAULT_RATES[borrower.scheme]
+      annualRate: SCHEME_DEFAULT_RATES[prev.scheme]
     }));
   }, [borrower.scheme]);
 
