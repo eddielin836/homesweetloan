@@ -78,7 +78,7 @@ export const PropertySection: React.FC<Props> = ({ property, onChange }) => {
             animate={{ opacity: 1, height: 'auto' }}
             className="md:col-span-2 overflow-hidden"
           >
-            <Field label="里" helperText="※ 屬於特定里別者核貸成數較高">
+            <Field label="里">
               <select 
                 value={property.subDistrict || ''}
                 onChange={(e) => onChange('subDistrict', e.target.value)}
