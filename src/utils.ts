@@ -58,8 +58,45 @@ export const effectiveAnnualRate = (borrower: BorrowerInfo) =>
 export const defaultGraceLTV = (scheme: LoanScheme) => 
   scheme === LoanScheme.NEST_NEST ? GRACE_DEFAULT_LTV_NEST_NEST : GRACE_DEFAULT_LTV;
 
-export const ltvLadderFor = (scheme: LoanScheme) => 
-  scheme === LoanScheme.NEST_NEST ? LTV_LADDER_NEST_NEST : LTV_LADDER_DEFAULT;
+/**
+ * Get Property Zone Grade (A, B, C, D)
+ */
+export function getPropertyZoneGrade(property: PropertyInfo): 'A' | 'B' | 'C' | 'D' {
+  // If a subDistrict (village) is selected, it's always Zone A
+  if (property.subDistrict) return 'A';
+
+  const city = CITY_BY_NAME.get(property.city);
+  if (!city) return 'D';
+
+  if (city.zones.A.includes(property.district)) return 'A';
+  if (city.zones.B.includes(property.district)) return 'B';
+  if (city.zones.C.includes(property.district)) return 'C';
+  return 'D';
+}
+
+/**
+ * Get Base LTV for General Schemes based on Zone
+ */
+export function getZoneBaseLTV(grade: 'A' | 'B' | 'C' | 'D'): number {
+  switch (grade) {
+    case 'A': return 0.8;
+    case 'B': return 0.75;
+    case 'C': return 0.7;
+    case 'D': return 0.65;
+  }
+}
+
+/**
+ * Get LTV Ladder for a given scheme and property
+ */
+export function getLTVLadder(scheme: LoanScheme, property: PropertyInfo): number[] {
+  if (scheme === LoanScheme.NEST_NEST) {
+    return [0.85, 0.80, 0.75, 0.70, 0.65, 0.60];
+  }
+  const zoneGrade = getPropertyZoneGrade(property);
+  const z = getZoneBaseLTV(zoneGrade);
+  return [z, z - 0.05, z - 0.1, z - 0.15, z - 0.2];
+}
 
 /**
  * Calculate Household Outflow
@@ -135,24 +172,32 @@ export function performMainCalculation(borrower: BorrowerInfo, property: Propert
   const purchasePrice = property.purchasePrice || 0;
   
   const { totalLivingExpense, otherMonthlyRepayments } = getHouseholdOutflow(borrower, property);
-  const ltvLevels = ltvLadderFor(borrower.scheme);
   
-  const results: CalculationResult[] = ltvLevels.map(ltv => {
+  // Define the DTI Ratios (1.8 to 1.0)
+  let dtiRatios = [1.8, 1.6, 1.4, 1.2, 1.0];
+  const ltvLadder = getLTVLadder(borrower.scheme, property);
+  
+  if (borrower.scheme === LoanScheme.NEST_NEST && ltvLadder.length === 6) {
+    dtiRatios = [1.8, 1.8, 1.6, 1.4, 1.2, 1.0];
+  }
+  
+  const results: CalculationResult[] = ltvLadder.map((ltv, index) => {
+    const ratio = dtiRatios[index];
     const loanAmount = purchasePrice * ltv;
     const monthlyRepayment = calculateMonthlyPayment(loanAmount, rate, years);
-    const requiredRatio = getRequiredRatio(ltv);
     const totalMonthlyOutflow = monthlyRepayment + otherMonthlyRepayments + totalLivingExpense;
-    const totalRequiredAnnualIncome = requiredRatio * totalMonthlyOutflow * 12;
+    const totalRequiredAnnualIncome = ratio * totalMonthlyOutflow * 12;
     
     return {
-      ltv: ltv * 100,
+      ltv: Math.round(ltv * 1000) / 10,
+      dtiRatio: ratio,
       loanAmount,
       monthlyRepayment,
       requiredAnnualIncome: totalRequiredAnnualIncome
     };
   });
 
-  return results; // Note: ltvLadder constants are already sorted high to low
+  return results;
 }
 
 /**

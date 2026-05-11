@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { PropertyInfo } from '../types';
-import { TAIWAN_CITIES, CITY_BY_NAME } from '../constants';
+import { TAIWAN_CITIES, CITY_BY_NAME, SPECIAL_VILLAGES } from '../constants';
 import { SectionHeader } from '../components/SectionHeader';
 import { NumberField } from '../components/NumberField';
 import { Field } from '../components/Field';
@@ -15,6 +15,7 @@ interface Props {
 
 export const PropertySection: React.FC<Props> = ({ property, onChange }) => {
   const currentCity = CITY_BY_NAME.get(property.city);
+  const villages = SPECIAL_VILLAGES[property.district];
 
   return (
     <motion.section 
@@ -38,17 +39,59 @@ export const PropertySection: React.FC<Props> = ({ property, onChange }) => {
           </select>
         </Field>
 
-        <Field label="行政區">
+        <Field label="鄉鎮市區">
           <select 
             value={property.district}
             onChange={(e) => onChange('district', e.target.value)}
             className="input-field appearance-none"
           >
-            {currentCity?.districts.map(d => (
-              <option key={d} value={d}>{d}</option>
-            ))}
+            {currentCity && (
+              <>
+                {currentCity.zones.A.length > 0 && (
+                  <optgroup label="A 區 (最高 8 成)">
+                    {currentCity.zones.A.map(d => <option key={d} value={d}>{d}</option>)}
+                  </optgroup>
+                )}
+                {currentCity.zones.B.length > 0 && (
+                  <optgroup label="B 區 (最高 7.5 成)">
+                    {currentCity.zones.B.map(d => <option key={d} value={d}>{d}</option>)}
+                  </optgroup>
+                )}
+                {currentCity.zones.C.length > 0 && (
+                  <optgroup label="C 區 (最高 7 成)">
+                    {currentCity.zones.C.map(d => <option key={d} value={d}>{d}</option>)}
+                  </optgroup>
+                )}
+                {currentCity.zones.D.length > 0 && (
+                  <optgroup label="D 區 (最高 6.5 成)">
+                    {currentCity.zones.D.map(d => <option key={d} value={d}>{d}</option>)}
+                  </optgroup>
+                )}
+              </>
+            )}
           </select>
         </Field>
+
+        {villages && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="md:col-span-2 overflow-hidden"
+          >
+            <Field label="里" helperText="※ 屬於特定里別者核貸成數較高">
+              <select 
+                value={property.subDistrict || ''}
+                onChange={(e) => onChange('subDistrict', e.target.value)}
+                className="input-field appearance-none"
+              >
+                {villages.map(v => (
+                  <option key={v} value={v}>{v}</option>
+                ))}
+                <option value="">其他</option>
+              </select>
+            </Field>
+          </motion.div>
+        )}
 
         <div className="md:col-span-2">
           <Segmented 

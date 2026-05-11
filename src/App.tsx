@@ -70,10 +70,24 @@ export default function App() {
   // 3. Reset district when city changes
   useEffect(() => {
     const cityData = CITY_BY_NAME.get(property.city);
-    if (cityData && cityData.districts.length > 0) {
-      setProperty(prev => ({ ...prev, district: cityData.districts[0] }));
+    if (cityData) {
+      // Find the first non-empty zone to pick a default district
+      const allDistricts = [
+        ...cityData.zones.A,
+        ...cityData.zones.B,
+        ...cityData.zones.C,
+        ...cityData.zones.D
+      ];
+      if (allDistricts.length > 0) {
+        setProperty(prev => ({ ...prev, district: allDistricts[0], subDistrict: undefined }));
+      }
     }
   }, [property.city]);
+
+  // 4. Reset subDistrict when district changes
+  useEffect(() => {
+    setProperty(prev => ({ ...prev, subDistrict: undefined }));
+  }, [property.district]);
 
   // --- Calculations ---
   const results = useMemo(() => performMainCalculation(borrower, property), [borrower, property]);

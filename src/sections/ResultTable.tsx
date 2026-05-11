@@ -39,6 +39,7 @@ export const ResultTable: React.FC<Props> = ({ loanTerm, age, scheme, annualRate
         <table className="w-full border-collapse">
           <thead className="text-left border-b border-primary/20">
             <tr className="text-primary text-[10px] font-black uppercase tracking-widest">
+              <th className="pb-3 px-2">收支比</th>
               <th className="pb-3 px-2">貸款成數</th>
               <th className="pb-3 px-2">貸款金額</th>
               <th className="pb-3 px-2">預估月還款</th>
@@ -47,7 +48,12 @@ export const ResultTable: React.FC<Props> = ({ loanTerm, age, scheme, annualRate
           </thead>
           <tbody className="text-xs md:text-sm">
             {results.map((item) => (
-              <tr key={item.ltv} className="border-b border-stone-100 last:border-0 hover:bg-white/40 transition-all text-stone-600">
+              <tr key={`${item.ltv}-${item.dtiRatio}`} className="border-b border-stone-100 last:border-0 hover:bg-white/40 transition-all text-stone-600">
+                <td className="py-3 md:py-4 px-1 md:px-2">
+                  <span className="text-xs md:text-sm font-medium text-stone-500 whitespace-nowrap">
+                    {Math.round(item.dtiRatio * 100)}%
+                  </span>
+                </td>
                 <td className="py-3 md:py-4 px-1 md:px-2">
                   <span className="text-sm md:text-base font-bold text-stone-800 whitespace-nowrap">
                     {item.ltv}%

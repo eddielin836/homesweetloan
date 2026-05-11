@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { PropertyInfo, LoanScheme } from '../types';
-import { ltvLadderFor } from '../utils';
+import { getLTVLadder } from '../utils';
 import { SectionHeader } from '../components/SectionHeader';
 import { ToggleRow } from '../components/Toggle';
 import { Segmented } from '../components/Segmented';
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const GracePeriodSection: React.FC<Props> = ({ property, scheme, onChange }) => {
-  const ltvOptions = ltvLadderFor(scheme).map(val => ({
+  const ltvOptions = getLTVLadder(scheme, property).map(val => ({
     label: `${(val * 100).toFixed(0)}%`,
     value: val
   }));

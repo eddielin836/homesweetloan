@@ -26,6 +26,7 @@ export interface BorrowerInfo {
 export interface PropertyInfo {
   city: string;
   district: string;
+  subDistrict?: string; // 特定區/里 (Note 1-7)
   isPreSale: boolean;
   houseAge?: number;
   purchasePrice?: number;
@@ -35,6 +36,7 @@ export interface PropertyInfo {
 
 export interface CalculationResult {
   ltv: number;
+  dtiRatio: number; // 新增：收支比 (1.8, 1.6, etc.)
   loanAmount: number;
   monthlyRepayment: number;
   requiredAnnualIncome: number;
