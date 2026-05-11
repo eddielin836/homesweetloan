@@ -90,16 +90,10 @@ export default function App() {
     setProperty(prev => ({ ...prev, subDistrict: undefined }));
   }, [property.district]);
 
-  // 5. Sync Grace Period LTV with the current ladder (prevents sticking to invalid LTVs like 80% when switching back)
+  // 5. Force reset Grace Period LTV to the highest available when scheme or location changes
   useEffect(() => {
     const currentLadder = getLTVLadder(borrower.scheme, property);
-    const currentLTV = property.gracePeriodLTV;
-    
-    // Check if currentLTV exists in the ladder (with a small epsilon for floating point safety)
-    const isValid = currentLadder.some(ltv => Math.abs(ltv - currentLTV) < 0.001);
-    
-    if (!isValid && currentLadder.length > 0) {
-      // Default to the highest available LTV in the current ladder
+    if (currentLadder.length > 0) {
       setProperty(prev => ({ ...prev, gracePeriodLTV: currentLadder[0] }));
     }
   }, [borrower.scheme, property.city, property.district, property.subDistrict]);
