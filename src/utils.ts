@@ -47,7 +47,7 @@ export const formatIncomeRounded = (val: number) => {
  * Predicates
  */
 export const schemeAllowsCustomRate = (scheme: LoanScheme) => 
-  scheme === LoanScheme.TOP_2500 || scheme === LoanScheme.OTHER_FIRST;
+  scheme === LoanScheme.GENERAL_FIRST;
 
 /**
  * Helpers

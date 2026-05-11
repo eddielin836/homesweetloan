@@ -8,22 +8,19 @@ import { LoanScheme } from './types';
 export const SCHEME_LABELS: Record<LoanScheme, string> = {
   [LoanScheme.NEW_YOUTH]: '青年安心成家貸款',
   [LoanScheme.NEST_NEST]: '築巢優利貸',
-  [LoanScheme.TOP_2500]: '一般首購-2500大企業',
-  [LoanScheme.OTHER_FIRST]: '一般首購-非2500大'
+  [LoanScheme.GENERAL_FIRST]: '一般首購'
 };
 
 export const SCHEME_DEFAULT_RATES: Record<LoanScheme, number> = {
   [LoanScheme.NEW_YOUTH]: 2.275,
   [LoanScheme.NEST_NEST]: 2.185,
-  [LoanScheme.TOP_2500]: 2.585,
-  [LoanScheme.OTHER_FIRST]: 2.985
+  [LoanScheme.GENERAL_FIRST]: 2.585
 };
 
 export const SCHEME_DEFAULT_YEARS: Record<LoanScheme, number> = {
   [LoanScheme.NEW_YOUTH]: 40,
   [LoanScheme.NEST_NEST]: 40,
-  [LoanScheme.TOP_2500]: 30,
-  [LoanScheme.OTHER_FIRST]: 30
+  [LoanScheme.GENERAL_FIRST]: 30
 };
 
 export interface TaiwanCity {

@@ -6,8 +6,7 @@
 export enum LoanScheme {
   NEW_YOUTH = 'NEW_YOUTH', // 青年安心成家貸款
   NEST_NEST = 'NEST_NEST', // 築巢優利貸
-  TOP_2500 = 'TOP_2500',   // 一般首購-2500大企業
-  OTHER_FIRST = 'OTHER_FIRST' // 一般首購-非2500大
+  GENERAL_FIRST = 'GENERAL_FIRST', // 一般首購
 }
 
 export interface BorrowerInfo {
