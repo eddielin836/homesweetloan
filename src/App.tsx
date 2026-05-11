@@ -12,8 +12,7 @@ import {
   calculateLoanTerm, 
   performGracePeriodCalculation, 
   effectiveAnnualRate,
-  defaultGraceLTV,
-  getLTVLadder
+  defaultGraceLTV
 } from './utils';
 
 // Sections
@@ -89,14 +88,6 @@ export default function App() {
   useEffect(() => {
     setProperty(prev => ({ ...prev, subDistrict: undefined }));
   }, [property.district]);
-
-  // 5. Force reset Grace Period LTV to the highest available when scheme or location changes
-  useEffect(() => {
-    const currentLadder = getLTVLadder(borrower.scheme, property);
-    if (currentLadder.length > 0) {
-      setProperty(prev => ({ ...prev, gracePeriodLTV: currentLadder[0] }));
-    }
-  }, [borrower.scheme, property.city, property.district, property.subDistrict]);
 
   // --- Calculations ---
   const results = useMemo(() => performMainCalculation(borrower, property), [borrower, property]);
