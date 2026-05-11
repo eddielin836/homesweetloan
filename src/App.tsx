@@ -12,7 +12,8 @@ import {
   calculateLoanTerm, 
   performGracePeriodCalculation, 
   effectiveAnnualRate,
-  defaultGraceLTV
+  defaultGraceLTV,
+  getLTVLadder
 } from './utils';
 
 // Sections
@@ -88,6 +89,20 @@ export default function App() {
   useEffect(() => {
     setProperty(prev => ({ ...prev, subDistrict: undefined }));
   }, [property.district]);
+
+  // 5. Sync Grace Period LTV with the current ladder (prevents sticking to invalid LTVs like 80% when switching back)
+  useEffect(() => {
+    const currentLadder = getLTVLadder(borrower.scheme, property);
+    const currentLTV = property.gracePeriodLTV;
+    
+    // Check if currentLTV exists in the ladder (with a small epsilon for floating point safety)
+    const isValid = currentLadder.some(ltv => Math.abs(ltv - currentLTV) < 0.001);
+    
+    if (!isValid && currentLadder.length > 0) {
+      // Default to the highest available LTV in the current ladder
+      setProperty(prev => ({ ...prev, gracePeriodLTV: currentLadder[0] }));
+    }
+  }, [borrower.scheme, property.city, property.district, property.subDistrict]);
 
   // --- Calculations ---
   const results = useMemo(() => performMainCalculation(borrower, property), [borrower, property]);
