@@ -63,7 +63,7 @@ export const ResultTable: React.FC<Props> = ({ loanTerm, actualYears, age, schem
                     {item.ltv}%
                   </span>
                 </td>
-                <td className="py-3 md:py-4 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{formatCurrency(item.loanAmount)}</td>
+                <td className="py-3 md:py-4 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{item.loanAmount} 萬元</td>
                 <td className="py-3 md:py-4 px-1 md:px-2 text-[11px] md:text-sm font-medium whitespace-nowrap">{formatCurrency(item.monthlyRepayment)}</td>
                 <td className="py-3 md:py-4 px-1 md:px-2 text-right">
                   <span className="text-sm md:text-lg font-bold text-primary">

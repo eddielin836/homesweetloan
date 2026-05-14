@@ -45,7 +45,7 @@ export default function App() {
     district: '中正區',
     isPreSale: true,
     houseAge: 0,
-    purchasePrice: 10000000,
+    purchasePrice: 1000,
     needsGracePeriod: false,
     gracePeriodLTV: GRACE_DEFAULT_LTV
   });

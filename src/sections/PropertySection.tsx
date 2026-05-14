@@ -106,10 +106,10 @@ export const PropertySection: React.FC<Props> = ({ property, onChange }) => {
 
         <NumberField 
           label="購屋總價 (萬)"
-          value={property.purchasePrice === undefined ? undefined : property.purchasePrice / 10000}
-          onChange={(v) => onChange('purchasePrice', v === undefined ? undefined : v * 10000)}
+          value={property.purchasePrice}
+          onChange={(v) => onChange('purchasePrice', v)}
           suffix="萬"
-          helperText={`等於 ${formatCurrency(property.purchasePrice || 0)}`}
+          helperText={property.purchasePrice ? `等於 ${formatCurrency(property.purchasePrice * 10000)}` : undefined}
         />
 
         {!property.isPreSale && (

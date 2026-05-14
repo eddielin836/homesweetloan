@@ -183,15 +183,16 @@ export function performMainCalculation(borrower: BorrowerInfo, property: Propert
   
   const results: CalculationResult[] = ltvLadder.map((ltv, index) => {
     const ratio = dtiRatios[index];
-    const loanAmount = Math.floor(purchasePrice * ltv);
-    const monthlyRepayment = calculateMonthlyPayment(loanAmount, rate, years);
+    const loanAmountWan = Math.floor(purchasePrice * ltv);
+    const loanAmountYuan = loanAmountWan * 10000;
+    const monthlyRepayment = calculateMonthlyPayment(loanAmountYuan, rate, years);
     const totalMonthlyOutflow = monthlyRepayment + otherMonthlyRepayments + totalLivingExpense;
     const totalRequiredAnnualIncome = ratio * totalMonthlyOutflow * 12;
     
     return {
       ltv: Math.round(ltv * 1000) / 10,
       dtiRatio: ratio,
-      loanAmount,
+      loanAmount: loanAmountWan,
       monthlyRepayment,
       requiredAnnualIncome: totalRequiredAnnualIncome
     };
@@ -210,18 +211,19 @@ export function performGracePeriodCalculation(borrower: BorrowerInfo, property: 
   
   const ltv = property.gracePeriodLTV || defaultGraceLTV(borrower.scheme);
   const purchasePrice = property.purchasePrice || 0;
-  const loanAmount = Math.floor(purchasePrice * ltv);
+  const loanAmountWan = Math.floor(purchasePrice * ltv);
+  const loanAmountYuan = loanAmountWan * 10000;
   
   return [1, 2, 3, 4, 5].map(gYears => {
     const remainingYears = loanTerm - gYears;
-    const monthlyRepayAfterGrace = calculateMonthlyPayment(loanAmount, rate, remainingYears);
+    const monthlyRepayAfterGrace = calculateMonthlyPayment(loanAmountYuan, rate, remainingYears);
     const ratio = gYears <= GRACE_LONG_THRESHOLD_YEARS - 1 ? GRACE_PERIOD_RATIOS.SHORT : GRACE_PERIOD_RATIOS.LONG;
     const annualIncome = ratio * (monthlyRepayAfterGrace + otherMonthlyRepayments + totalLivingExpense) * 12;
     
     return {
       label: `${gYears} 年`,
       ratio,
-      loanAmount,
+      loanAmount: loanAmountWan,
       monthlyRepayAfterGrace,
       requiredAnnualIncome: annualIncome
     };
