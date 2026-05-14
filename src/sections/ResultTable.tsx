@@ -6,14 +6,15 @@ import { SCHEME_LABELS } from '../constants';
 import { formatCurrency, formatIncomeRounded } from '../utils';
 
 interface Props {
-  loanTerm: number;
+  loanTerm: number; // Max allowed
+  actualYears: number; // User selected
   age: number;
   scheme: LoanScheme;
   annualRate: number;
   results: CalculationResult[];
 }
 
-export const ResultTable: React.FC<Props> = ({ loanTerm, age, scheme, annualRate, results }) => {
+export const ResultTable: React.FC<Props> = ({ loanTerm, actualYears, age, scheme, annualRate, results }) => {
   return (
     <motion.div 
       initial={{ opacity: 0, scale: 0.98 }}
@@ -22,7 +23,16 @@ export const ResultTable: React.FC<Props> = ({ loanTerm, age, scheme, annualRate
     >
       <div className="flex flex-col md:flex-row justify-between items-start gap-4">
         <div className="space-y-1 md:space-y-2">
-          <h2 className="text-xl md:text-2xl serif font-bold text-stone-800">最長核貸年限：{loanTerm} 年</h2>
+          <div className="space-y-1">
+            <h2 className="text-xl md:text-2xl serif font-bold text-stone-800">
+              計算年限：{actualYears} 年
+            </h2>
+            {actualYears !== loanTerm && (
+              <p className="text-[10px] md:text-xs text-primary font-bold">
+                (最長可貸：{loanTerm} 年)
+              </p>
+            )}
+          </div>
           <p className="text-stone-500 text-[10px] md:text-xs italic font-medium">
             依年齡 {age} 歲與 {SCHEME_LABELS[scheme]} 評估。
           </p>

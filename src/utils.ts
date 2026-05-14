@@ -167,7 +167,7 @@ function getRequiredRatio(ltv: number): number {
  * Main calculation logic
  */
 export function performMainCalculation(borrower: BorrowerInfo, property: PropertyInfo): CalculationResult[] {
-  const years = calculateLoanTerm(borrower, property);
+  const years = borrower.loanYears || calculateLoanTerm(borrower, property);
   const rate = effectiveAnnualRate(borrower);
   const purchasePrice = property.purchasePrice || 0;
   
@@ -183,7 +183,7 @@ export function performMainCalculation(borrower: BorrowerInfo, property: Propert
   
   const results: CalculationResult[] = ltvLadder.map((ltv, index) => {
     const ratio = dtiRatios[index];
-    const loanAmount = purchasePrice * ltv;
+    const loanAmount = Math.floor(purchasePrice * ltv);
     const monthlyRepayment = calculateMonthlyPayment(loanAmount, rate, years);
     const totalMonthlyOutflow = monthlyRepayment + otherMonthlyRepayments + totalLivingExpense;
     const totalRequiredAnnualIncome = ratio * totalMonthlyOutflow * 12;
@@ -204,13 +204,13 @@ export function performMainCalculation(borrower: BorrowerInfo, property: Propert
  * Grace Period calculation logic
  */
 export function performGracePeriodCalculation(borrower: BorrowerInfo, property: PropertyInfo): GracePeriodResult[] {
-  const loanTerm = calculateLoanTerm(borrower, property);
+  const loanTerm = borrower.loanYears || calculateLoanTerm(borrower, property);
   const rate = effectiveAnnualRate(borrower);
   const { totalLivingExpense, otherMonthlyRepayments } = getHouseholdOutflow(borrower, property);
   
   const ltv = property.gracePeriodLTV || defaultGraceLTV(borrower.scheme);
   const purchasePrice = property.purchasePrice || 0;
-  const loanAmount = purchasePrice * ltv;
+  const loanAmount = Math.floor(purchasePrice * ltv);
   
   return [1, 2, 3, 4, 5].map(gYears => {
     const remainingYears = loanTerm - gYears;

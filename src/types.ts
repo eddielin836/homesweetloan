@@ -13,6 +13,7 @@ export interface BorrowerInfo {
   age?: number;
   scheme: LoanScheme;
   annualRate?: number;
+  loanYears?: number;
   otherLoanMonthly?: number;
   residenceCity: string;
   hasGuarantor: boolean;

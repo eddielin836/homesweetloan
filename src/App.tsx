@@ -91,6 +91,16 @@ export default function App() {
     setProperty(prev => ({ ...prev, subDistrict: undefined }));
   }, [property.district]);
 
+  // 5. Sync loanYears with max loanTerm when max term changes or initially
+  useEffect(() => {
+    const maxTerm = calculateLoanTerm(borrower, property);
+    // Only auto-update if loanYears is not set or if it exceeds new max
+    setBorrower(prev => ({
+      ...prev,
+      loanYears: prev.loanYears && prev.loanYears <= maxTerm ? prev.loanYears : maxTerm
+    }));
+  }, [borrower.age, borrower.scheme, property.houseAge, property.isPreSale]);
+
   // --- Calculations ---
   const results = useMemo(() => performMainCalculation(borrower, property), [borrower, property]);
   const loanTerm = useMemo(() => calculateLoanTerm(borrower, property), [borrower, property]);
@@ -124,6 +134,7 @@ export default function App() {
         <div className="lg:col-span-5 space-y-4">
           <BorrowerSection 
             borrower={borrower} 
+            property={property}
             onChange={handleBorrowerChange} 
             onGuarantorChange={handleGuarantorChange} 
           />
@@ -142,6 +153,7 @@ export default function App() {
         <div className="lg:col-span-7 space-y-4">
           <ResultTable 
             loanTerm={loanTerm}
+            actualYears={borrower.loanYears || loanTerm}
             age={borrower.age || 0}
             scheme={borrower.scheme}
             annualRate={effectiveAnnualRate(borrower)}

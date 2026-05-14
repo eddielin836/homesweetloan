@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Users } from 'lucide-react';
-import { BorrowerInfo, LoanScheme } from '../types';
+import { BorrowerInfo, LoanScheme, PropertyInfo } from '../types';
 import { SCHEME_LABELS, TAIWAN_CITIES, SCHEME_DEFAULT_RATES } from '../constants';
-import { schemeAllowsCustomRate } from '../utils';
+import { schemeAllowsCustomRate, calculateLoanTerm } from '../utils';
 import { SectionHeader } from '../components/SectionHeader';
 import { NumberField } from '../components/NumberField';
 import { ToggleRow } from '../components/Toggle.tsx';
@@ -11,11 +11,14 @@ import { Field } from '../components/Field';
 
 interface Props {
   borrower: BorrowerInfo;
+  property: PropertyInfo;
   onChange: <K extends keyof BorrowerInfo>(field: K, value: BorrowerInfo[K]) => void;
   onGuarantorChange: <K extends keyof BorrowerInfo['guarantor']>(field: K, value: BorrowerInfo['guarantor'][K]) => void;
 }
 
-export const BorrowerSection: React.FC<Props> = ({ borrower, onChange, onGuarantorChange }) => {
+export const BorrowerSection: React.FC<Props> = ({ borrower, property, onChange, onGuarantorChange }) => {
+  const maxYears = calculateLoanTerm(borrower, property);
+  
   return (
     <motion.section 
       initial={{ opacity: 0, y: 20 }}
@@ -47,6 +50,16 @@ export const BorrowerSection: React.FC<Props> = ({ borrower, onChange, onGuarant
             ))}
           </select>
         </Field>
+
+        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <NumberField 
+            label="貸款年限"
+            value={borrower.loanYears}
+            onChange={(v) => onChange('loanYears', v)}
+            suffix="年"
+            helperText={`※ 最長核貸年限：${maxYears}年`}
+          />
+        </div>
 
         {schemeAllowsCustomRate(borrower.scheme) && (
           <motion.div 
